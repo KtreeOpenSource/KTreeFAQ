@@ -114,9 +114,9 @@ class QuestionsTree extends Widget
     private function _getItem($topics, $children = null)
     {
        // $class = ($children) ? 'fa fa-angle-right pull-left expand-child' : 'fa fa-square pull-left expand-child';
-        $class = ($children) ? 'fa fa-fw fa-minus-circle pull-left expand-child' : 'fa fa-fw fa-minus-circle pull-left expand-child';
+        $class = ($children) ? 'fa fa-fw fa-minus-circle pull-left expand-child' : 'fa fa-fw pull-left expand-child';
 
-        $return = Html::a('<i class="' . $class . '"></i> <span>' . Html::encode($topics['questionsInfo'][0]['question_name']) . '</span>', ['topics/get-question-info', 'topicslug' => $this->topic_slug, 'id' => $topics['question_id'], 'slug' => $topics['slug']], ['class' => 'topic-content', 'id' => 'topic_id_' . $topics['question_id']]);
+        $return = Html::a('<i class="' . $class . '"></i> <span>' . Html::encode(strip_tags($topics['questionsInfo'][0]['question_name'])) . '</span>', ['topics/get-question-info', 'topicslug' => $this->topic_slug, 'slug' => $topics['slug']], ['class' => 'topic-content', 'id' => 'topic_id_' . $topics['question_id']]);
 
         return $return;
     }

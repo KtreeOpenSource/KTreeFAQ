@@ -32,7 +32,7 @@ function getSelectionText() {
             'notifycollouts': {
                 "id": 'notcolwidget',
                 "label": '<i class="fa fa-info-circle fa-1"></i>',
-                "display": "Collout"
+                "display": "Callout"
             }, 'table': {
                 "id": 'tabledataWid',
                 "label": '<i class="fa fa-table fa-1"></i>',
@@ -124,7 +124,7 @@ function getSelectionText() {
                     $widget = $this.headOptions(additionInfo.tag).prop('outerHTML') + ($('<div/>').addClass('wid-contain').append($h).prop('outerHTML'));
                     break;
                 case "notcolwidget":
-                    additionInfo = (typeof additionInfo == "undefined") ? {type: 'info', data: {'head': 'Heading!', 'text': "Collout data here..."}} : additionInfo;
+                    additionInfo = (typeof additionInfo == "undefined") ? {type: 'info', data: {'head': 'Heading!', 'text': "Callout data here..."}} : additionInfo;
                     $h = $this.createColloutElement(additionInfo.type, additionInfo.data).prop('outerHTML');
 
                     $widget = $this.colloutOptions(additionInfo.type).prop('outerHTML') + ($('<div/>').addClass('wid-contain').append($h).prop('outerHTML'));
@@ -217,8 +217,8 @@ function getSelectionText() {
             var type = (typeof typeInfo == "undefined") ? 'info' : typeInfo;
             var classes = 'alert elements alert-' + type;
             var icon = $("<i/>").addClass(types[type]);
-            var span = $("<span/>").attr({'contenteditable': 'true', "class": 'heading-col', 'title': "Collout heading.."}).text(data.head);
-            var body = $("<span/>").attr({'contenteditable': 'true', "class": 'heading-body', 'title': "Collout content.."}).text(data.text);
+            var span = $("<span/>").attr({'contenteditable': 'true', "class": 'heading-col', 'title': "Callout heading.."}).text(data.head);
+            var body = $("<span/>").attr({'contenteditable': 'true', "class": 'heading-body', 'title': "Callout content.."}).text(data.text);
             $cH = $("<h4/>").append(icon).append(span);
             $cO = $("<div/>").addClass(classes).append($cH).append(body);
             return $cO;
@@ -557,7 +557,7 @@ $(document).ready(function () {
         var topicLanguage = $('.topic_language_hidden').val();
         var content = advanceEditor.getData();
         var topicStatus = $('.topic_status_change').val();
-        var questionTitle = $('.editable_div').text();
+        var questionTitle = $('.editable_div').html();
         var topicTitle = $('.course-title').text();
         $(".contentSaveResponse").html('');
 
@@ -584,7 +584,7 @@ $(document).ready(function () {
                         $(this).remove();
                     });
                     if (ajaxResponse.selectedLanguage == 'EN') {
-                        window.location.href = baseUrl+'topics' + '/' + ajaxResponse.topicName + '/' + ajaxResponse.message.question_id + '/' + ajaxResponse.message.slug;
+                        window.location.href = baseUrl+'topics' + '/' + ajaxResponse.topicName + '/' + ajaxResponse.message.slug;
                     } else {
                         $('.editable_div').text();
                         var node = $("#fancyree_w0").fancytree("getTree").getNodeByKey(topicId);

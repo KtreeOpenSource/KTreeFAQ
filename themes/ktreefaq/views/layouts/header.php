@@ -49,7 +49,7 @@ use yii\helpers\Url;
                            href="#"><?php echo Yii::$app->user->identity->user_username; ?> <span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
 
-                            <li><?php echo Html::a(Yii::t('app', 'Manage Topics'), ['/topics/index']); ?></li>
+                            <li><?php echo Html::a(Yii::t('app', 'Manage FAQ Topics'), ['/topics/index']); ?></li>
                             <li><?php echo Html::a(Yii::t('app', 'Manage Questions'), ['/questions/index']); ?></li>
                             <li><?php echo Html::a(Yii::t('app', 'Admin Settings'), ['/adminSettings/adminindex']); ?></li>
                             <li><?php echo Html::a(Yii::t('app', 'Flush Cache'), ['/topics/flush-cache'], ['class' => 'flush-cache']); ?></li>

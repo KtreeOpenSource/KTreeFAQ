@@ -26,6 +26,17 @@ $languageList = json_decode(Admin::getLanguagesList(), true);
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
             <?= $form->field($model, 'topic_name')->textInput(['maxlength' => true]) ?>
+	   <div class="row" >
+		<div class='col-md-6'>
+	   <?= $form->field($mainModel, 'slug',['template' => "{label}\n<div class='row'><div class='col-md-4'> <span class='input-group-addon'>".Url::home(true)."topics/</span></div> <div class='col-md-8'>\n{input}</div></div>\n{error}"])->textInput(['class'=>'form-control edit-slug-field','maxlength' => true,'readOnly'=>($model->isNewRecord) ? false : true]) ?>
+		</div>
+		<div class="col-md-6 edit-button-class">
+			<?php if(Yii::$app->language == Admin::DEFAULT_LANGUAGE){?>
+			  <?= Html::button(Yii::t('app', 'Edit'), ['class' =>'btn btn-primary edit-slug']) ?>			
+			<?php } ?>
+
+		</div>
+	   </div>
 
             <?= $form->field($model, 'language')->dropDownList($languageList, []) ?>
 

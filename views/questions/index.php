@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute'=>'question_name',
             'width'=>'310px',
              'value'=>function($data){
-                     return $data->questionsInfo[0]->question_name;
+                     return strip_tags($data->questionsInfo[0]->question_name);
                  }
            ],
 
@@ -89,11 +89,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'template'=>'{update}{delete}',
             'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'update') {
-                        $url = Url::toRoute(['topics/get-question-info','topicslug' => $model->topic->slug,  'id' => $model->question_id, 'slug' => $model->slug]);
+                        $url = Url::toRoute(['topics/get-question-info','topicslug' => $model->topic->slug,'slug' => $model->slug]);
                         return $url;
                     }
                     if ($action === 'delete') {
-                        $url = Url::toRoute(['questions/delete','question_id' => $model->question_id, 'language' => $model->questionsInfo[0]->language]);
+                        $url = Url::toRoute(['delete','question_id' => $model->question_id, 'language' => $model->questionsInfo[0]->language]);
                         return $url;
                     }
                 }

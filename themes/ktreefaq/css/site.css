@@ -220,12 +220,18 @@ ul li .topicsTreeContainer {
 }
 .courses-left-content {
     height: 100%;
-  /*  overflow: auto; */
     padding: 5px;
     width: 100%;
+   
 }
 .content.course-view {
     /*    margin-left: 240px;*/
+}
+.courses-left-content .topics-tree .sidebar-menu {
+  
+  display:inline-block !important;
+  overflow-y: auto;
+  position: relative;
 }
 .topics-tree .sidebar-menu .treeview-menu{
     margin: 0px;
@@ -237,14 +243,18 @@ ul li .topicsTreeContainer {
 }
 .topics-tree .sidebar-menu li > a > .fa{
     margin: 0px;
-    width: 20px !important;
+    width: 16px !important;
     text-align: center;
-    padding: 5px;
-}.topics-tree .sidebar-menu li > a > span{
-     padding: 5px;
+    padding: 2px 5px 2px 0;
+}
+.topics-tree .sidebar-menu li > a > span{
+     padding: 5px 0px !imporant;
+     display:table !important;
+     font-size: 10pt !important;
  }
 .topics-tree .sidebar-menu .treeview-menu > li > a{
-    padding: 5px 5px 5px 0px;
+    padding: 5px  10px !important;
+    font-size:13px !important;
 }
 .menu-link span {
     color: #828282;
@@ -267,7 +277,7 @@ ul li .topicsTreeContainer {
 }*/
 
 .course-creation {
-    left: 150px;
+    left: 170px;
     padding-left: 4px;
     position: relative;
     top: 25px;
@@ -286,9 +296,67 @@ ul li .topicsTreeContainer {
 }*/
 
 .category-section .col-md-4 {
-    height: 170px;
+    height: 204px;
     margin-bottom: 10px;
 }
+
+
+/*kt 259 header and sidebar here */
+
+/*.content-header.content-search-header
+{
+  height:66px;
+}*/
+.main-header .logo
+{
+  padding:2px 0px !important;
+}
+.navbar-custom-menu .navbar-nav > li > a {
+    line-height: 20px;
+    padding-bottom: 19px !important;
+    padding-top: 19px !important;
+}
+
+span.fancytree-title
+{
+  padding:6px 3px ;
+}
+.topic-sidebar
+{
+  margin:30px 4px;
+}
+/*.tt-scrollable-menu
+{
+  margin:10px 0px;
+}*/
+/*.navbar-custom-menu > ul > li > a
+{
+  padding-bottom: 25px !important;
+  padding-top: 22px !important;
+}*/
+.topics-tree h3{
+    margin:20px 4px;
+}
+.sidebar-menu .treeview-menu .treeview-menu{
+ padding-left: 10px !important;
+}
+span.fancytree-expander {
+    cursor: pointer;
+    float:left !important;
+}
+.content-wrapper.two-column {
+    margin-left: 260px !important;
+}
+/*.content.course-view {
+   padding:15px 0px !important;
+}*/
+
+/*kt 259 header and sidebar ends here */
+
+
+
+
+
 @media(max-width:767px){
 
     .skin-blue .main-header .navbar .dropdown-menu li a{
@@ -308,13 +376,24 @@ ul li .topicsTreeContainer {
 }
 .courses-left-content .ui-draggable-handle {
     display: inline-block;
-    height: 350px;
-    overflow: auto;
+    height: 300px;
+    overflow-y: auto;
     position: relative;
 
 }
+/*.courses-left-content .sidebar-menu{
+display: inline-block;
+    height: 300px;
+    overflow-y: auto;
+    position: relative;
+
+
+}*/
+
+
 .topic-sidebar span.fancytree-title{
 	white-space: pre-line;
+	display:table;
 }
 .topic-sidebar span.fancytree-node{
 	width:90% !important;
@@ -340,7 +419,6 @@ ul li .topicsTreeContainer {
 .topics-creation {
 }
 .btn.btn-sm.btn-primary.quick_create_topic {
-
     width: 100%;
 }
 .btn.btn-info.preview_topics {
@@ -349,15 +427,16 @@ ul li .topicsTreeContainer {
     width: 45%;
 }
 .savetopic_btn_container .save_topic_content {
-    white-space: normal;
+   
     width: 100%;
+    min-height:34px;
 }
 .publish_btn_container {
-    margin-right: -3px;
-    padding: 5px 6px;
+    margin-right: 0;
+    padding: 5px 0;
 }
 .savetopic_btn_container {
-    padding: 5px 5px 5px 0 !important;
+   padding: 5px 0 5px 5px !important;
 }
 .global-loader .ui-widget-overlay {
     height: 100%;
@@ -439,7 +518,6 @@ table.elements.border-5 * {
 .topics-title{
     font-size: 16px;
     font-weight: bold;
-
 }
 
 /****KNX total site beautification starts @KT201 starts ******/
@@ -450,16 +528,16 @@ table.elements.border-5 * {
 .content-wrapper {
     margin-top: 50px;
 }
-.main-header {
+.main-header{
     position: fixed !important;
     top: 0;
     width: 100%;
-
-}/*
+}
 .main-sidebar, .left-side {
-    height: 100% !important;
-    position: fixed !important;
-}*/
+    width:260px !important;
+    min-height: calc(100% - 0px) !important;
+    padding-top:50px !important; 
+}
 .main-footer{
 	position:relative !important;
 }
@@ -467,7 +545,7 @@ table.elements.border-5 * {
     background-color: #262626 !important;
 }
 .main-header .logo {
-	width:240px !important;
+	width:260px !important;
 	border-right: 1px solid #8a8a8a;
 
 }
@@ -523,7 +601,7 @@ table.elements.border-5 * {
 .box {
     border-top-color: #2a2a2a !important;
 }
-.box-title {
+.box-title a {
     color: #222222 !important;
 }
 .courses-index .btn {
@@ -624,7 +702,7 @@ td.skip-export .glyphicon-trash {
     padding-top: 0 !important;
 }
 .topics_buttons_list {
-    padding-left: 5px;
+    padding-left: 0px;
     position: relative;
 }
 .title-header-class {
@@ -684,12 +762,12 @@ form[name="image-widget"] [role="filemanager-modal"] .modal-dialog{
 .knx-auto-search-header {
     float: left;
     padding-left: 5px;
-    padding-top: 10px;
+    padding-top: 14px;
     position:relative;
     width: 35%;
 }
 .knx-auto-search-header .search-btn {
-    top: 35% !important;
+    top: 43% !important;
 }
 .navbar-static-top .tt-scrollable-menu {
     width: 100%;
@@ -734,16 +812,18 @@ button.search_button {
 }
 .tt-scrollable-menu {
     width: 100%;
+   
 }
 .search-btn {
     font-size: 17px !important;
     position: absolute;
     right: 8px;
-    top: 6px;
+    top: 8px;
     z-index: 99;
 }
 .twitter-typeahead input {
     padding-right: 30px;
+    margin-left:24px;
 }
 .navbar-custom-menu .navbar-nav {
     float: left;
@@ -782,6 +862,7 @@ button.search_button {
     width: 100%;
 }
 .search_button > span {
+
     display: none;
 }
 .skin-blue .main-header .logo{
@@ -833,8 +914,45 @@ body .main-sidebar, .left-side{
 }
 .course-title.cke_editable.cke_editable_inline.cke_contents_ltr.cke_show_borders {
     background-color: #d8f1f9;
+    padding:0px 5px;
 }
 
-.sidebar-menu {
+/*.sidebar-menu {
+  height:290px !important;
   overflow-y: auto !important; 
+}*/
+
+
+.fancytree-exp-e span.fancytree-expander, .fancytree-exp-ed span.fancytree-expander {
+    background-position: -31px -128px !important;
+    /*background-color: black;
+    border-radius: 50%;*/
 }
+
+.fancytree-exp-c span.fancytree-expander {
+    background-position: -63px -126px !important;
+   /* background-color: black;
+    border-radius: 50%;*/
+}
+
+
+.fancytree-exp-cl span.fancytree-expander {
+    background-position: -63px -126px !important;
+  /*  background-color: black;
+    border-radius: 50%;*/
+}
+
+.fancytree-exp-el span.fancytree-expander, .fancytree-exp-edl span.fancytree-expander {
+    background-position: -31px -128px !important;
+  /*  background-color: black;
+    border-radius: 50%;*/
+}
+
+
+.input-group-addon {
+    height: 34px !important;
+}
+.edit-button-class {
+   top : 25px !important;
+}
+

@@ -15,9 +15,10 @@ $(window).load(function () {
     var currentUrl = $(location).attr('href');
     var urlArray = currentUrl.split('/');
     var treeVisible = $('.sidebar').is(':visible');
-    topicId = urlArray[urlArray.length - 2];
+    var topicId = $('.topic_id_hidden').val();
+
 //condition to check add css only for topics
-    if (treeVisible && urlArray.length >= 7) {
+    if (treeVisible && topicId) {
         var selector = $('#topic_id_' + topicId);
         selector.parents('ul').css('display', 'block');
         selector.css('background-color', '#d9e8fb');
@@ -122,7 +123,7 @@ function quickCreateTopics(action) {
 
                     $(this).prop('disabled', false);
 
-                    window.location.href = baseUrl + 'topics' + '/' + ajaxResponse.topicSlug + '/' + ajaxResponse.message.question_id + '/' + ajaxResponse.message.slug;
+                    window.location.href = baseUrl + 'topics' + '/' + ajaxResponse.topicSlug + '/' + ajaxResponse.message.slug;
                 }
              }
         });
@@ -139,9 +140,15 @@ $(document).on('click', '.course_image_remove', function () {
 
 $(document).ready(function () {
 
-	var wh = $(window).height()-200;
-	$(".sidebar-menu").height(wh);
-
+	/*var wh = $(window).height()-50;
+	$(".sidebar-menu").height(wh);*/
+	
+	var footerheight = $(window).height()-111;
+	$(".content-wrapper.two-column").css("min-height",footerheight);
+	$(window).resize(function(){
+	var footerheight = $(window).height()-111;
+	$(".content-wrapper.two-column").css("min-height",footerheight);
+	});
     $('.menu-responsive-icon').on('click', function () {
         $('.main-sidebar').toggle();
     });
@@ -203,7 +210,7 @@ function createQuestion(id) {
             removeLoader();
             var ajaxResponse = $.parseJSON(data);
             if (ajaxResponse.status) {
-                window.location.href = baseUrl+'topics' + '/' + ajaxResponse.topicslug + '/' + ajaxResponse.questionId + '/' + ajaxResponse.questionSlug;
+                window.location.href = baseUrl+'topics' + '/' + ajaxResponse.topicslug + '/' + ajaxResponse.questionSlug;
             } else {
                 dialogBox(ajaxResponse.message);
 
@@ -241,3 +248,49 @@ function dialogBox(message){
 $(document).on('click', '#error_alert_ok', function () {
     $('#errorMessageAlert').remove();
 });
+	
+/**For sidebar fix height**/
+
+$(window).load(function(){
+	var viewportHeight = $(window).height();
+//	$(".courses-left-content").height(viewportHeight - 101);
+	$(".courses-left-content .ui-draggable-handle").height(viewportHeight - 257);
+	$(".courses-left-content .topics-tree .sidebar-menu").height(viewportHeight-190);
+});
+$(window).resize(function(){
+var viewportHeightC = $(window).height(); 	
+	$(".courses-left-content .ui-draggable-handle").height(viewportHeightC -257);
+    //$(".courses-left-content").height(viewportHeightC -101);
+	//$(".courses-left-content .topics-tree .sidebar-menu").height(viewportHeight-200);
+
+});
+
+
+$('.edit-slug').click(function(){
+  var readOnlyAttr = $('.edit-slug-field').prop('readonly');
+  $('.edit-slug-field').prop('readonly',!readOnlyAttr)
+});
+
+$(document).on('blur', '.topicName', function () {
+    var inputstring = $('.topicName').val();
+    if ($('.edit-slug-field').val() == '' || !$('.edit-slug-field').val().trim().length)
+        $('.edit-slug-field').val(inputstring.trim().replace(/\s+/g, '-').toLowerCase());
+});
+$(document).on('change click', '.edit-slug-field', function () {
+    var inputstring = $(this).val();
+    if ($('.edit-slug-field').val().trim().length){
+	        $('.edit-slug-field').val(inputstring.trim().replace(/\s+/g, '-').toLowerCase());	
+	}
+
+    if ($('.edit-slug-field').val() == '' || !$('.edit-slug-field').val().trim().length)
+        if (($('.topicName').data('changed') == true)){
+	        $('.topicName').trigger('blur');
+    }
+    
+});
+
+
+
+
+
+

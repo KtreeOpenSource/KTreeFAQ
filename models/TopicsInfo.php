@@ -93,12 +93,12 @@ class TopicsInfo extends \app\vendor\KTComponents\KTActiveRecord
     public function attributeLabels()
     {
         return [
-            'topic_id' => Yii::t('app', 'Topic ID'),
-            'topic_name' => Yii::t('app', 'Topic Name'),
+            'topic_id' => Yii::t('app', 'FAQ Topic ID'),
+            'topic_name' => Yii::t('app', 'FAQ Topic Name'),
             'language' => Yii::t('app', 'Language'),
-            'topic_description' => Yii::t('app', 'Topic Description'),
-            'topic_short_desc' => Yii::t('app', 'Topic Short Desc'),
-            'topic_status' => Yii::t('app', 'Topic Status'),
+            'topic_description' => Yii::t('app', 'FAQ Topic Description'),
+            'topic_short_desc' => Yii::t('app', 'FAQ Topic Short Desc'),
+            'topic_status' => Yii::t('app', 'FAQ Topic Status'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_date' => Yii::t('app', 'Created Date'),
             'modified_by' => Yii::t('app', 'Modified By'),

@@ -11,7 +11,7 @@ use app\models\Topics;
 /* @var $searchModel app\models\TopicsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Topics');
+$this->title = Yii::t('app', 'FAQ Topics');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="courses-index">
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'attribute'=>'topic_status',
             // 'width'=>'310px',
-            'label'=>Yii::t('app','Topic Status'),
+            'label'=>Yii::t('app','FAQ Topic Status'),
             'value'=>function ($data) use ($statusList) {
                     return $statusList[$data->topicsInfo[0]->topic_status];
                 },
@@ -71,11 +71,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'template'=>'{update}{delete}',
             'urlCreator' => function ($action, $model) {
                     if ($action === 'update') {
-                        $url = Url::toRoute(['/topics/update/','topic_id' => $model->topic_id, 'language' => $model->topicsInfo[0]->language]);
+                        $url = Url::toRoute(['update','topic_id' => $model->topic_id, 'language' => $model->topicsInfo[0]->language]);
                         return $url;
                     }
                     if ($action === 'delete') {
-                         $url = Url::toRoute(['/topics/delete','topic_id' => $model->topic_id, 'language' => $model->topicsInfo[0]->language]);
+                         $url = Url::toRoute(['delete','topic_id' => $model->topic_id, 'language' => $model->topicsInfo[0]->language]);
                         return $url;
                     }
                 }
@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'pjax'=>true,
         'striped'=>true,
         'hover'=>true,
-        'panel'=>['type'=>'primary', 'heading'=>Yii::t('app','Topics')],
+        'panel'=>['type'=>'primary', 'heading'=>Yii::t('app','FAQ Topics')],
         'columns'=>$gridColumns,
     ]);
 

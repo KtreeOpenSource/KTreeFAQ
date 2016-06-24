@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Topics */
 
-$this->title = Yii::t('app', 'Update Topics') . ' ' . $model->topic_id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Topics'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Update FAQ Topics') . ' : ' . $model->topic_name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'FAQ Topics'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="courses-update">

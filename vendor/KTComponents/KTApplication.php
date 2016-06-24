@@ -41,13 +41,18 @@ class KTApplication extends \yii\web\Application
                 'user/<action:\w+>' => 'user/users/<action>',
                 'adminSettings/<action:\w+>' => 'adminSettings/admin-settings-config/<action>',
                 '<controller>' => '<controller>/index',
-                'topics/<id:\d+>/<slug>' => 'topics/get-course-info',
-                'topics/<topicslug>/<id:\d+>/<slug>' => 'topics/get-question-info',
+
                 'questions/delete/<topic_id:\d+>/<language>' => 'questions/delete',
                 'questions/update/<topic_id:\d+>/<language>' => 'questions/update',
-                '<controller:\w+>/<id:\d+>' => '<controller>/view',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                //'<controller:\w+>/<id:\d+>' => '<controller>/view',
+                
+		'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+	      
+                'topics/<slug>' => 'topics/get-topic-questions',
+		//'topics/<topic_id>/<language>' => 'topics/update',
+                'topics/<topicslug>/<slug>' => 'topics/get-question-info',
+
             ],
 
         ];

@@ -23,8 +23,10 @@ use yii\helpers\Url;
         ]
     ); ?>
 
-    <?= $form->field($topicInfoModel, 'topic_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($topicInfoModel, 'topic_name')->textInput(['maxlength' => true,'class'=>'form-control topicName']) ?>
 
+   <?= $form->field($model, 'slug',['template' => "{label}\n <div class='row'><div class='col-md-4'> <span class='input-group-addon'>".Url::home(true)."topics/</span></div> <div class='col-md-8'>\n{input}</div></div>\n{error}"])->textInput(['class'=>'form-control edit-slug-field','maxlength' => true,'readOnly'=>($model->isNewRecord) ? false : true]) ?>
+		
 
 
     <?= $form->field($topicInfoModel, 'topic_short_desc')->textarea(['rows' => 6]) ?>

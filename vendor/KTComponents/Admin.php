@@ -43,7 +43,7 @@ class Admin extends Component
     const PAGINATION_LIMIT = 10;
     const ADMIN_USER_ID = 1;
 
-    const QUESTION_LIMIT_COUNT = 3;
+    const QUESTION_LIMIT_COUNT = 5;
     const DEFAULT_PARENT_ID = 0;
 
 
@@ -292,10 +292,10 @@ class Admin extends Component
             foreach ($items as $item) {
 
                 $infoClass = ($previewParameter) ? '' : ' <i class ="fa fa-info-circle topic_info" title="' . Yii::t('app', 'Single click to active. Double click to switch question') . '"></i>';
-                $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $topicSlug, 'id' => $item['question_id'], 'slug' => $item['slug'], 'preview' => $previewParameter]);
+                $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $topicSlug, 'slug' => $item['slug'], 'preview' => $previewParameter]);
 
                 $result[] = [
-                    'title' => $item['questionsInfo'][0]['question_name'] . ' ' . $infoClass,
+                    'title' => strip_tags($item['questionsInfo'][0]['question_name']) . ' ' . $infoClass,
                     'id' => $item['question_id'],
                     'folder' => false,
                     'icon' => false,

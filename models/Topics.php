@@ -10,7 +10,7 @@ use yii\behaviors\SluggableBehavior;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "faq_topics".
@@ -48,12 +48,12 @@ class Topics extends \app\vendor\KTComponents\KTActiveRecord
     {
         $immutable = (Yii::$app->language == Admin::DEFAULT_LANGUAGE) ? false : true;
         return [
-            'sluggable' => [
+           /* 'sluggable' => [
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'topic_name',
                 'immutable' => $immutable,
                 'slugAttribute' => 'slug'
-            ],
+            ],*/
             [
                 'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => 'created_date',
@@ -75,11 +75,11 @@ class Topics extends \app\vendor\KTComponents\KTActiveRecord
     public function rules()
     {
         return [
-            [['topic_name'], 'required'],
+            [['topic_name','slug'], 'required'],
             [['created_by', 'modified_by'], 'integer'],
             [['created_date', 'modified_date'], 'safe'],
             [['topic_name'], 'string', 'max' => 255],
-            [['topic_name'], 'unique',],
+            [['topic_name','slug'], 'unique'],
 
         ];
     }
@@ -91,9 +91,9 @@ class Topics extends \app\vendor\KTComponents\KTActiveRecord
     public function attributeLabels()
     {
         return [
-            'topic_id' => Yii::t('app', 'Topic ID'),
-            'topic_name' => Yii::t('app', 'Topic Name'),
-            'topic_image' => Yii::t('app', 'Topic Image'),
+            'topic_id' => Yii::t('app', 'FAQTopic ID'),
+            'topic_name' => Yii::t('app', 'FAQ Topic Name'),
+            'topic_image' => Yii::t('app', 'FAQ Topic Image'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_date' => Yii::t('app', 'Created Date'),
             'modified_by' => Yii::t('app', 'Modified By'),
@@ -220,4 +220,22 @@ class Topics extends \app\vendor\KTComponents\KTActiveRecord
 
         return $retrun;
     }
+
+
+   /**
+     * Finds the Topics model based on its slug value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Topics the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public static function findModelBySlug($slug)
+    {
+        if ($model = Topics::find()->joinWith(['topicsInfo'])->where(['slug'=>$slug])->one()) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
 }

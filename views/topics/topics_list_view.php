@@ -15,13 +15,16 @@ use \yii\helpers\Html;
     $mainModel = $model;
     $model = $model['topicsInfo'][0];
     $topQuestionList = json_decode(Admin::getTopQuestions($model['topic_id']), true);
+
+    $topicUrl = Url::toRoute(['topics/get-topic-questions', 'slug' => $mainModel['slug']]);
+
     ?>
     <div class="box <?= $className ?>">
         <div class="box-header with-border">
 
             <h3 class="box-title">
                 <strong>
-                    <?= $model['topic_name'] ?>
+			<a href="<?= $topicUrl ?>" title="<?= Yii::t('app', 'Question Name') ?>"><?= strip_tags($model['topic_name']) ?></a>
                 </strong>
             </h3>
 
@@ -35,13 +38,13 @@ use \yii\helpers\Html;
                 foreach ($topQuestionList as $question) {
                     $questionMainModel = $question;
                     $question = $question['questionsInfo'][0];
-                    $questionUrl = Url::toRoute(['topics/get-question-info', 'topicslug' => $mainModel['slug'], 'id' => $questionMainModel['question_id'], 'slug' => $questionMainModel['slug']]);
+                    $questionUrl = Url::toRoute(['topics/get-question-info', 'topicslug' => $mainModel['slug'],'slug' => $questionMainModel['slug']]);
 
                     if ($question) {
                         ?>
                         <li>
                             <a href="<?= $questionUrl ?>"
-                               title="<?= Yii::t('app', 'Question Name') ?>"><?= $question['question_name'] ?></a>
+                               title="<?= Yii::t('app', 'Question Name') ?>"><?= strip_tags($question['question_name']) ?></a>
                         </li>
                     <?php
                     }

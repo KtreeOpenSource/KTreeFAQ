@@ -95,10 +95,23 @@ class Questions extends \app\vendor\KTComponents\KTActiveRecord
             [['topic_id', 'created_by', 'modified_by'], 'integer'],
             [['created_date', 'modified_date'], 'safe'],
             [['question_name'], 'string', 'max' => 255],
-
+            [['question_name'], 'unique'],
+            //[['question_name'], 'uniqueValidation'],
         ];
     }
 
+   public function uniqueValidation()
+   {
+   	if($this->question_name){
+	    $questionModel = Questions::find()->where(['question_name'=>$this->question_name])->one();
+	    if($questionModel->question_id != $this->question_id && $this->topic_id == $questionModel->topic_id){
+		 $this->addError(
+                           $this->attribute,
+                            $this->attribute . ' has already been taken.'
+                        );
+	    }
+	}
+   }
     /**
      * Retuns the attribute labels
      * @inheritdoc
@@ -238,7 +251,7 @@ class Questions extends \app\vendor\KTComponents\KTActiveRecord
             $key = Yii::t('app', Admin::TOP_QUESTIONS) . '_' . $language . '_' . $model->topic_id;
             Admin::clearCache($key);
 
-            $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $model->topic->slug, 'id' => $model->question_id, 'slug' => $model->slug]);
+            $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $model->topic->slug, 'slug' => $model->slug]);
 
             header('Location: ' . $url);
             $return['status'] = true;
@@ -327,6 +340,29 @@ class Questions extends \app\vendor\KTComponents\KTActiveRecord
             $return['parentId'][] = $parentRelation->question_id;
             $return['status'] = true;
             return $return;
+        }
+    }
+
+   /**
+     * Finds the Questions model based on its slug value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Questions the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public static function findModelBySlug($slug,$topicslug)
+    {
+	$topicTableName = Topics::tableName();
+	$questionTableName = Questions::tableName();
+	$questionInfoTableName = QuestionsInfo::tableName();
+	
+	    $status = (Yii::$app->user->id && Yii::$app->user->id == Admin::ADMIN_USER_ID) ? Admin::RECORD_DELETE : Admin::ACTIVE;
+            $whereCondition = (Yii::$app->user->id && Yii::$app->user->id == Admin::ADMIN_USER_ID) ? '!=' : '=';
+
+        if ($model = Questions::find()->joinWith(['topic','questionsInfo'])->where([$questionTableName.'.slug'=>$slug,$topicTableName.'.slug'=>$topicslug])->one()) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }

@@ -84,13 +84,15 @@ class TopicsController extends Controller
             $postInfo = Yii::$app->request->post();
 
             $mainModel->attributes = $postInfo['Topics'];
+
             $mainModel->topic_image = $postInfo['Topics']['topic_image'];
+            $mainModel->slug =  (Yii::$app->language == Admin::DEFAULT_LANGUAGE) ? $postInfo['Topics']['slug'] : $model->slug;
             $model->attributes = $postInfo['TopicsInfo'];
             $languageSelected = Yii::$app->language;
 
             $mainModel->topic_name = ($language == Admin::DEFAULT_LANGUAGE) ? $model->topic_name : $mainModel->topic_name;
 
-            if ($mainModel->save() && $model->save()) {
+            if($model->save() && $mainModel->save() ) {
 
                     self::saveTopicImage($mainModel,$mediaModel,$postInfo);
 
@@ -155,9 +157,8 @@ class TopicsController extends Controller
      * @return string
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionGetQuestionInfo($id, $slug, $preview = null)
+    public function actionGetQuestionInfo($topicslug, $slug, $preview = null)
     {
-
 	 $adminSettings = Yii::$app->getSettings();
 
          if ($adminSettings['site_name'] == '') {
@@ -165,55 +166,19 @@ class TopicsController extends Controller
             return $this->redirect('adminSettings/adminindex');
 
         }else{
-		  $this->layout = 'topicMain';
-        $model = Questions::findOne($id);
-        $topicModel = $model->topic;
-
-        $topicInfoModel = $topicModel->topicsInfo;
-
-        foreach ($topicInfoModel as $topicInfo) {
-            $languages[] = $topicInfo->language;
-            $info[$topicInfo->language] = $topicInfo->attributes;
-        }
-
-        $questionInfoModel = $model->questionsInfo[0];
-
-       
-
-        $questionInfoModel = ($questionInfoModel) ? $questionInfoModel : QuestionsInfo::find()->where(['!=', 'question_status', 2])->andWhere(['question_id' => $id])->one();
-
-        if ((($model == null) || $model->slug != $slug) || ((Yii::$app->user->isGuest && $questionInfoModel->question_status != Admin::PUBLISH_VALUE))) {
-
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-
-        ($model->parent_question_id != 0) ? Questions::getParentRelationStatus($model) : '';
-
-        $languageOption = Yii::$app->language;
-        $languageOption = ($languageOption) ? $languageOption : Admin::DEFAULT_LANGUAGE;
-
-        $listOfLanguages = ArrayHelper::getColumn($model->questionsInfo, function ($element) {
-            return $element['language'];
-        });
-
-        self::createTopicAndQuestion($topicModel, $preview, $languages, $model, $questionInfoModel, $listOfLanguages, $info);
-
+	$this->layout = 'topicMain';
+        $model = Questions::findModelBySlug($slug,$topicslug);
         $previewParameter = Yii::$app->request->get('preview');
 
-        $firstNode = Yii::$app->session->get('firstNode_' . $model->topic_id);
+	$return = $this->questionsView($slug,$model,$previewParameter,$preview);
+	
+	return $this->render('question_info', [
+		    'infoModel' => $return['questionInfoModel'],
+		    'model' => $return['model'],
+		    'previewParameter' => $return['previewParameter']
+       	 	]);
 
-        Yii::$app->session->set('firstNode_' . $model->topic_id, '');
-
-
-        return $this->render('question_info', [
-            'infoModel' => $questionInfoModel,
-            'model' => $model,
-            'firstNode' => $firstNode,
-            'previewParameter' => $previewParameter
-        ]);
 	}
-      
-
     }
     //ends here
     /**
@@ -403,7 +368,7 @@ class TopicsController extends Controller
                 $topicInfoData = Yii::$app->request->post('TopicsInfo');
                 $model->topic_name = $topicInfoData['topic_name'];
                 $model->topic_image = $topicData['topic_image'];
-
+                $model->slug = $topicData['slug'];
                 $infoModel->topic_name = $model->topic_name;
                 $infoModel->topic_short_desc = $topicInfoData['topic_short_desc'];
                 $infoModel->topic_description = $topicInfoData['topic_short_desc'];
@@ -420,7 +385,7 @@ class TopicsController extends Controller
                 $response = $this->saveTopicInformation($model, $infoModel);
 
                 if ($response['status']) {
-                    $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $response['topicModel']['slug'], 'id' => $response['questionModel']['question_id'], 'slug' => $response['questionModel']['slug']]);
+                    $url = Url::toRoute(['topics/get-question-info', 'topicslug' => $response['topicModel']['slug'],'slug' => $response['questionModel']['slug']]);
                     header("Location: " . $url);
                 } else {
                     return json_encode($response);
@@ -447,7 +412,8 @@ class TopicsController extends Controller
 
         $language = Yii::$app->language ? Yii::$app->language : Yii::t('app', Admin::DEFAULT_LANGUAGE);
         $topicInfoModel->language = $language;
-        $topicInfoModel->topic_status = Admin::DRAFT_VALUE;
+        //$topicInfoModel->topic_status = Admin::DRAFT_VALUE;
+        $topicInfoModel->topic_status = Admin::PUBLISH_VALUE;
 
         if ($model->save()) {
 
@@ -518,5 +484,82 @@ class TopicsController extends Controller
         return $return;
     }
 
+    public function questionsView($slug,$model,$previewParameter=null,$preview=null)
+    {
 
+	$id = $model->question_id;
+        $topicModel = $model->topic;
+
+        $topicInfoModel = $topicModel->topicsInfo;
+
+        foreach ($topicInfoModel as $topicInfo) {
+            $languages[] = $topicInfo->language;
+            $info[$topicInfo->language] = $topicInfo->attributes;
+        }
+
+        $questionInfoModel = $model->questionsInfo[0];
+       
+        $questionInfoModel = ($questionInfoModel) ? $questionInfoModel : QuestionsInfo::find()->where(['!=', 'question_status', 2])->andWhere(['question_id' => $id])->one();
+
+        if ((($model == null)) || ((Yii::$app->user->isGuest && $questionInfoModel->question_status != Admin::PUBLISH_VALUE))) {
+
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        ($model->parent_question_id != 0) ? Questions::getParentRelationStatus($model) : '';
+
+        $languageOption = Yii::$app->language;
+        $languageOption = ($languageOption) ? $languageOption : Admin::DEFAULT_LANGUAGE;
+
+        $listOfLanguages = ArrayHelper::getColumn($model->questionsInfo, function ($element) {
+            return $element['language'];
+        });
+
+        self::createTopicAndQuestion($topicModel, $preview, $languages, $model, $questionInfoModel, $listOfLanguages, $info);
+
+       
+	$return['questionInfoModel'] = $questionInfoModel;
+	$return['model'] = $model;
+	$return['previewParameter'] = $previewParameter;
+
+	return $return;
+   } 
+ 
+   public function actionGetTopicQuestions($slug)
+   {
+	 $adminSettings = Yii::$app->getSettings();
+
+         if ($adminSettings['site_name'] == '') {
+
+            return $this->redirect('adminSettings/adminindex');
+
+        }else{
+
+	$this->layout = 'topicMain';
+        $topicModel = Topics::findModelBySlug($slug);
+	$model = self::getActiveQuestion($topicModel);//$topicModel->question[0];
+        $previewParameter = Yii::$app->request->get('preview');
+	$return = $this->questionsView($slug,$model,$previewParameter);
+	
+	return $this->render('question_info', [
+		    'infoModel' => $return['questionInfoModel'],
+		    'model' => $return['model'],
+		    'previewParameter' => $return['previewParameter']
+       	 	]);
+     }
+  }
+   
+   public static function getActiveQuestion($topicModel)
+   {
+	$questionsModel = $topicModel->question;
+	$status = (Yii::$app->user->id && Yii::$app->user->id == Admin::ADMIN_USER_ID) ? [Admin::ACTIVE,'-1'] : [Admin::ACTIVE];
+   	foreach($questionsModel as $question){
+		$statusValue = ($question->questionsInfo[0]->question_status == 0 && !empty($question->questionsInfo[0]->question_status)) ? '-1' : $question->questionsInfo[0]->question_status;
+		if(in_array($statusValue,$status) && $question->parent_question_id == 0){
+			return $question;
+			break;
+		}
+	}
+exit;
+   }
 }
