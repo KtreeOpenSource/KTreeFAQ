@@ -280,6 +280,7 @@ table.elements th.ui-resizable{
 }
 .content-header.content-search-header {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2) !important;
+    padding : 15px 15px 5px 15px !important;
     
 }
 .tt-menu .tt-suggestion{

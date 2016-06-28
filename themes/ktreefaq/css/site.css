@@ -547,6 +547,7 @@ table.elements.border-5 * {
 .main-header .logo {
 	width:260px !important;
 	border-right: 1px solid #8a8a8a;
+	height : auto !important;
 
 }
 .skin-blue .main-header .logo{background-color:#262626 !important;}
