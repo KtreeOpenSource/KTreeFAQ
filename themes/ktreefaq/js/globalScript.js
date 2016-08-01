@@ -212,7 +212,10 @@ function createQuestion(id) {
             if (ajaxResponse.status) {
                 window.location.href = baseUrl+'topics' + '/' + ajaxResponse.topicslug + '/' + ajaxResponse.questionSlug;
             } else {
-                dialogBox(ajaxResponse.message);
+		var msg = ajaxResponse.message;
+		var errorMessage = (typeof msg.question_name[0] != 'undefined') ? msg.question_name[0] : msg.message;
+		alert(msg.question_name[0]);
+               // dialogBox(msg.question_name[0]);
 
             }
 

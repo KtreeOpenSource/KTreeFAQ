@@ -6,12 +6,11 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
-
-use app\vendor\KTComponents\Admin;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
+use app\vendor\KTComponents\Admin;
 
 /**
  * This is the model class for table "faq_questions".
@@ -95,8 +94,8 @@ class Questions extends \app\vendor\KTComponents\KTActiveRecord
             [['topic_id', 'created_by', 'modified_by'], 'integer'],
             [['created_date', 'modified_date'], 'safe'],
             [['question_name'], 'string', 'max' => 255],
-            [['question_name'], 'unique'],
-            //[['question_name'], 'uniqueValidation'],
+            //[['question_name'], 'unique'],
+            [['question_name'], 'uniqueValidation'],
         ];
     }
 
@@ -104,10 +103,10 @@ class Questions extends \app\vendor\KTComponents\KTActiveRecord
    {
    	if($this->question_name){
 	    $questionModel = Questions::find()->where(['question_name'=>$this->question_name])->one();
-	    if($questionModel->question_id != $this->question_id && $this->topic_id == $questionModel->topic_id){
+	    if($questionModel->question_id != $this->question_id && $questionModel->questionsInfo[0]){
 		 $this->addError(
-                           $this->attribute,
-                            $this->attribute . ' has already been taken.'
+                           'question_name',
+                            $this->question_name . ' has already been taken.'
                         );
 	    }
 	}

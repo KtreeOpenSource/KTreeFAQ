@@ -48,6 +48,10 @@ class KTApplication extends \yii\web\Application
                 
 		'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+
+                'topics/set-language' => 'topics/set-language',
+                'topics/create-topic' => 'topics/create-topic',
+                'topics/flush-cache' => 'topics/flush-cache',
 	      
                 'topics/<slug>' => 'topics/get-topic-questions',
 		//'topics/<topic_id>/<language>' => 'topics/update',
